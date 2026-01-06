@@ -10,6 +10,9 @@ const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
 
+// View Engine Setup
+app.set("view engine", "ejs")
+
 // Index Route
 app.get("/", (req, res) => {
   res.render("index", { title: "Home" })
