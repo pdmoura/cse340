@@ -90,8 +90,7 @@ a {
 
 #page-nav a {
     display: block;
-    padding: 1.2rem;
-    font-size: 1.3rem;
+    padding: 1rem;
     color: var(--text-light);
     font-weight: 700;
     transition: background-color 0.3s;
