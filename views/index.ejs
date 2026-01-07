@@ -2,16 +2,21 @@
     <section id="hero">
         <div class="hero-content">
             <h1>Welcome to CSE Motors!</h1>
-            <div class="hero-features">
-                <p><strong>DMC Delorean</strong></p>
-                <p>3 Cup holders</p>
-                <p>Superman doors</p>
-                <p>Fuzzy dice!</p>
+            <div class="hero-detail-box">
+                <div class="hero-features">
+                    <p><strong>DMC Delorean</strong></p>
+                    <p>3 Cup holders</p>
+                    <p>Superman doors</p>
+                    <p>Fuzzy dice!</p>
+                </div>
+                <a href="#" class="cta-button">Own Today</a>
             </div>
-            <a href="#" class="cta-button">Own Today</a>
         </div>
         <div class="hero-image-container">
-            <img src="/images/vehicles/delorean.jpg" fetchpriority="high" alt="DMC Delorean Sports Car">
+            <picture>
+                <source media="(min-width: 800px)" srcset="/images/vehicles/delorean.jpg">
+                <img src="/images/vehicles/delorean-tn.jpg" alt="DMC Delorean Sports Car" fetchpriority="high">
+            </picture>
         </div>
     </section>
 
