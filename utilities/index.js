@@ -27,13 +27,12 @@ Util.getNav = async function (req, res, next) {
 /* **************************************
 * Build the classification view HTML
 * ************************************ */
-Util.buildClassificationGrid = async function(data) {
-  let grid;
 
-  if (data.rows.length > 0) {
-    grid = '<ul id="inv-display">';
-    
-    data.rows.forEach(vehicle => { 
+Util.buildClassificationGrid = async function(data) {
+  let grid
+  if (data.length > 0) {
+    grid = '<ul id="inv-display">'
+    data.forEach(vehicle => {
       grid += `
         <li>
           <a href="../../inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">
@@ -46,18 +45,19 @@ Util.buildClassificationGrid = async function(data) {
                 ${vehicle.inv_make} ${vehicle.inv_model}
               </a>
             </h2>
-            <span>$${new Intl.NumberFormat('en-US').format(vehicle.inv_price)}</span>
+            <span>
+              $${new Intl.NumberFormat('en-US').format(vehicle.inv_price)}
+            </span>
           </div>
-        </li>`;
-    });
-
-    grid += '</ul>';
-  } else { 
-    grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>';
+        </li>
+      `
+    })
+    grid += '</ul>'
+  } else {
+    grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>'
   }
-
-  return grid;
-};
+  return grid
+}
 
 // Easier to read version using .map() and .join() and template literals
 // Util.buildClassificationGrid = async function(data) {
