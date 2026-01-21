@@ -24,4 +24,74 @@ Util.getNav = async function (req, res, next) {
   return list
 }
 
+/* **************************************
+* Build the classification view HTML
+* ************************************ */
+Util.buildClassificationGrid = async function(data) {
+  let grid;
+
+  if (data.rows.length > 0) {
+    grid = '<ul id="inv-display">';
+    
+    data.rows.forEach(vehicle => { 
+      grid += `
+        <li>
+          <a href="../../inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">
+            <img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model} on CSE Motors" />
+          </a>
+          <div class="namePrice">
+            <hr />
+            <h2>
+              <a href="../../inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">
+                ${vehicle.inv_make} ${vehicle.inv_model}
+              </a>
+            </h2>
+            <span>$${new Intl.NumberFormat('en-US').format(vehicle.inv_price)}</span>
+          </div>
+        </li>`;
+    });
+
+    grid += '</ul>';
+  } else { 
+    grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>';
+  }
+
+  return grid;
+};
+
+// Easier to read version using .map() and .join() and template literals
+// Util.buildClassificationGrid = async function(data) {
+//   let grid;
+
+//   if (data.length > 0) {
+//     // We use .map() to create an array of strings, then .join('') to combine them
+//     const vehicleCards = data.map(vehicle => `
+//       <li>
+//         <a href="../../inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">
+//           <img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model} on CSE Motors" />
+//         </a>
+//         <div class="namePrice">
+//           <hr />
+//           <h2>
+//             <a href="../../inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">
+//               ${vehicle.inv_make} ${vehicle.inv_model}
+//             </a>
+//           </h2>
+//           <span>$${new Intl.NumberFormat('en-US').format(vehicle.inv_price)}</span>
+//         </div>
+//       </li>
+//     `).join('');
+
+//     grid = `<ul id="inv-display">${vehicleCards}</ul>`;
+//   } else {
+//     grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>';
+//   }
+
+//   return grid;
+// };
+
+
+
+
+
 module.exports = Util
