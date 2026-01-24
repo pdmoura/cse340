@@ -294,7 +294,7 @@ h1 {
 #inv-display li {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 2fr 1fr;
+  grid-template-rows: 1fr;
   list-style-type: none;
   text-align: center;
   border: gray solid 1px;
@@ -306,6 +306,7 @@ h1 {
 #inv-display img {
   width: 100%;
   height: auto;
+  object-fit: cover;
   border-radius: 10px 10px 0 0;
 }
 
@@ -328,6 +329,67 @@ h1 {
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   height: 100%;
+}
+
+
+#vehicle-detail h2 {
+  align-self: end;
+}
+
+#vehicle-detail img {
+  width: 100%;
+  height: auto;
+  margin-top: 2.5vh;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-top: 5vh;
+}
+
+.details ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 2.5vh;
+}
+
+.details li {
+  padding: 0.8rem;
+}
+
+.details li:first-child {
+  font-weight: bold;
+}
+
+.details li:nth-child(odd) {
+  background-color: whitesmoke;
+}
+
+.error-message {
+  position: relative;
+  display: inline-block;
+}
+
+.error-message img{
+  width: 100%;
+  height: auto;
+}
+
+.error-message p {
+  position: absolute;
+  font-size: large;
+  font-weight: bold;
+  top: 2%;
+  left: 2%;
+  right: 2%;
+  background: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  width: fit-content;
+}
+
+footer a:hover{
+	text-decoration: underline;
 }
 
 /* =============================================
@@ -433,6 +495,17 @@ h1 {
 	#inv-display li {
 		width: 100%;
 		height: 100%;
+	}
+
+	#vehicle-detail {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 2rem;
+	}
+
+	footer p{
+		margin-top: 4vh;
+		margin-bottom: 0;
 	}
 }
 
