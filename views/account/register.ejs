@@ -1,12 +1,12 @@
 <h1><%- title %></h1>
-<%# messages() %>
+<%- messages() %>
 <% if (errors) { %>
-    <ul class="notice">
-   <% errors.array().forEach(error => { %>
-     <li><%= error.msg %></li>
-  <%  }) %>
-   </ul>
-  <% } %>
+  <ul class="notice">
+    <% errors.forEach(message => { %>
+      <li><%= message %></li>
+    <% }) %>
+  </ul>
+<% } %>
 <div class="form-container">
     <form action="/account/register" method="POST">
         <div class="form-group">

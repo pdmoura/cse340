@@ -481,6 +481,19 @@ main h1 {
     transform: scale(0.98);
 }
 
+.form-container input:focus:valid {
+    border-color: #2e7d32;
+    background-color: #f1f8e9; 
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.form-container input:focus:invalid {
+    border-color: #d32f2f; 
+    background-color: #fffde7; 
+    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+
 .form-footer {
     margin-top: 1.5rem;
     font-size: 0.95rem;
@@ -530,7 +543,26 @@ main h1 {
     display: none !important;
 }
 
+/* Container for all flash messages */
+#messages {
+    width: 100%;
+    max-width: 450px;
+    margin: 2vh auto;
+}
 
+/* Style for the "notice" class */
+.notice {
+    list-style: none;
+    padding: 1rem;
+    margin: 0;
+    border-radius: 8px;
+    background-color: #e3f2fd; 
+    color: var(--primary-color); 
+    border: 1px solid var(--secondary-color);
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
 
 
 footer a:hover{
