@@ -1,0 +1,46 @@
+<h1><%- title %></h1>
+<%# messages() %>
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+<div class="form-container">
+    <form action="/account/register" method="POST">
+        <div class="form-group">
+            <label for="account_firstname">First Name</label>
+            <input type="text" name="account_firstname" id="account_firstname" required value="<%= locals.account_firstname %>">
+        </div>
+        <div class="form-group">
+            <label for="account_lastname">Last name</label>
+            <input type="text" id="account_lastname" name="account_lastname" required value="<%= locals.account_lastname %>">
+        </div>
+        <div class="form-group">
+            <label for="account_email">Email address</label>
+            <input type="email" id="account_email" name="account_email" required value="<%= locals.account_email %>">
+        </div>
+        <div class="form-group">
+            <label for="account_password">Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="account_password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>
+                <button type="button" class="pswdBtn" id="pswdBtn" aria-label="Show password">
+                    <svg class="show-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <svg class="hide-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                </button>
+            </div>
+        </div>
+        <div>
+            <p>The password must:</p>
+            <ul>
+                <li>be at least 12 characters long</li>
+                <li>contain at least 1 capital letter</li>
+                <li>contain at least 1 number</li>
+                <li>contain at least 1 special character</li>
+            </ul>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</div>
+<script src="/js/password-toggle.js" defer></script>
