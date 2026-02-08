@@ -875,6 +875,89 @@ footer a:hover{
 
 
 
+/* =============================================
+   UPDATE ACCOUNT VIEW
+   ============================================= */
+
+/* Main Wrapper to center the forms */
+#update-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 550px;
+    margin: 2rem auto;
+}
+
+/* The Card Look for the forms */
+.form-container {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;      
+    padding: 2.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* Headings inside the forms */
+.form-container h2 {
+    margin-top: 0;
+    color: var(--primary-color);
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Form Inputs */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* Password Section */
+.password-card {
+    border-left: 5px solid var(--primary-color);
+    background-color: #fafafa;
+}
+
+.info-block {
+    background-color: #eef2f6;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.password-rules {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 5px;
+    font-style: italic;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+
 
 /* =============================================
    MEDIA QUERY (Large Screens)
@@ -908,12 +991,17 @@ footer a:hover{
 		display: grid;
 		grid-template-areas:
 			"title title"
+            "flash flash"
 			"hero hero"
 			"upgrades reviews";
 		column-gap: 2rem;
 		align-items: stretch;
 	}
 
+    #flash-message {
+        grid-area: flash;
+        width: 100%; 
+    }
 	h1 {
 		grid-area: title;
 		font-size: xx-large;

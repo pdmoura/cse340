@@ -11,11 +11,11 @@
     <form action="/account/register" method="POST">
         <div class="form-group">
             <label for="account_firstname">First Name</label>
-            <input type="text" name="account_firstname" id="account_firstname" required value="<%= locals.account_firstname %>">
+            <input type="text" name="account_firstname" id="account_firstname" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$" inputmode="text" required value="<%= locals.account_firstname %>">
         </div>
         <div class="form-group">
             <label for="account_lastname">Last name</label>
-            <input type="text" id="account_lastname" name="account_lastname" required value="<%= locals.account_lastname %>">
+            <input type="text" id="account_lastname" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$" inputmode="text" name="account_lastname" required value="<%= locals.account_lastname %>">
         </div>
         <div class="form-group">
             <label for="account_email">Email address</label>

@@ -31,9 +31,6 @@ async function buildRegister(req, res, next) {
 
 
 
-
-
-
 /* ****************************************
 *  Process Registration
 * *************************************** */
@@ -41,11 +38,25 @@ async function registerAccount(req, res, next) {
   let nav = await utilities.getNav(req, res, next)
   const { account_firstname, account_lastname, account_email, account_password } = req.body
 
+// Hash the password
+  let hashedPassword
+  try {
+    hashedPassword = await bcrypt.hash(account_password, 10)
+  } catch (error) {
+    req.flash("notice", 'Sorry, there was an error processing the registration.')
+    res.status(500).render("account/register", {
+      title: "Registration",
+      nav,
+      errors: null,
+    })
+    return
+  }
+
   const regResult = await accountModel.registerAccount(
     account_firstname,
     account_lastname,
     account_email,
-    account_password
+    hashedPassword 
   )
 
   if (regResult) {
@@ -125,4 +136,108 @@ async function buildManagement(req, res, next) {
 }
 
 
-module.exports = { buildLogin, buildRegister,registerAccount, accountLogin, buildManagement };
+// Deliver the update account view
+async function buildUpdate(req, res) {
+  let nav = await utilities.getNav()
+  const account_id = parseInt(req.params.account_id)
+  const accountData = await accountModel.getAccountById(account_id)
+  if (accountData) {
+    res.render("account/account-update", {
+      title: "My Account",
+      nav,
+      errors: null,
+      account_firstname: accountData.account_firstname,
+      account_lastname: accountData.account_lastname,
+      account_email: accountData.account_email,
+      account_id: accountData.account_id
+    })
+  } else {
+    req.flash("notice", "Sorry, we could not find that account.")
+    res.status(404).redirect("/account/")
+  }
+}
+
+
+// Process the account update request
+async function accountUpdate(req, res) {
+  let nav = await utilities.getNav()
+  const { account_firstname, account_lastname, account_email} = req.body
+  const account_id = parseInt(req.body.account_id)
+  const updateResult = await accountModel.updateAccount(account_firstname, account_lastname, account_email, account_id)
+  
+  if (updateResult) {
+    // Query the FRESH data from the DB
+    const updatedAccountData = await accountModel.getAccountById(account_id)
+    
+    // Re-sign the JWT with the new data
+    delete updatedAccountData.account_password
+    const accessToken = jwt.sign(updatedAccountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+    
+    // Update the cookie
+    if(process.env.NODE_ENV === 'development') {
+      res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+    } else {
+      res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+    }
+
+    req.flash("notice", "Your account was successfully updated.")
+    res.redirect("/account/")
+
+  } else {
+    req.flash("notice", "Sorry, the update failed.")
+    res.status(501).render("account/account-update", {
+      title: "My Account",
+      nav,
+      errors: null,
+      account_id: account_id,
+      account_firstname: account_firstname,
+      account_lastname: account_lastname,
+      account_email: account_email
+    })
+  }
+}
+
+// Process the password update request
+async function passwordUpdate(req, res) {
+  let nav = await utilities.getNav()
+  const new_password = req.body.account_password
+  const account_id = parseInt(req.body.account_id)
+  const accountData = await accountModel.getAccountById(account_id)
+  if (accountData) {
+    try {
+      const hashedPassword = await bcrypt.hash(new_password, 10)
+      const updateResult = await accountModel.updatePassword(account_id, hashedPassword)
+      if (updateResult) {
+        req.flash("notice", "Your password was successfully updated.")
+        res.status(201).redirect("/account/")
+      } else {
+        req.flash("notice", "Sorry, the update failed.")
+        res.status(501).render("account/account-update", {
+          title: "My Account",
+          nav,
+          errors: null,
+          account_firstname: accountData.account_firstname, 
+          account_lastname: accountData.account_lastname,   
+          account_email: accountData.account_email,         
+          account_id: accountData.account_id                
+        })
+      }
+    } catch (error) {
+      throw new Error('Access Forbidden: ' + error.message)
+    }
+  } else {
+    req.flash("notice", "Sorry, we could not find that account.")
+    res.status(404).redirect("/account/")
+  }
+}
+
+async function logout(req, res) {
+  res.clearCookie("jwt");
+  req.flash("notice", "You have successfully logged out.");
+  res.redirect("/");
+}
+
+
+
+
+module.exports = { buildLogin, buildRegister,registerAccount, accountLogin, buildManagement, buildUpdate, accountUpdate, passwordUpdate, logout };

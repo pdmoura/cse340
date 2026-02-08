@@ -14,7 +14,11 @@ validate.registationRules = () => {
         .escape()
         .notEmpty()
         .isLength({ min: 1 })
-        .withMessage("Please provide a first name."), // on error this message is sent.
+        .withMessage("Please provide a first name.") // on error this message is sent.
+        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/)
+        .withMessage("First name may only contain letters, spaces, hyphens, and apostrophes.")
+        .isLength({ min: 2, max: 50 })
+        .withMessage("First name must be between 2 and 50 characters."),
   
       // lastname is required and must be string
       body("account_lastname")
@@ -22,7 +26,11 @@ validate.registationRules = () => {
         .escape()
         .notEmpty()
         .isLength({ min: 2 })
-        .withMessage("Please provide a last name."), // on error this message is sent.
+        .withMessage("Please provide a last name.") // on error this message is sent.
+        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/)
+        .withMessage("Last name may only contain letters, spaces, hyphens, and apostrophes.")
+        .isLength({ min: 2, max: 50 })
+        .withMessage("Last name must be between 2 and 50 characters."),
   
       // valid email is required and cannot already exist in the database
       body("account_email")
@@ -139,13 +147,21 @@ validate.updateRules = () => {
     .isEmail()
     .normalizeEmail() // refer to validator.js docs
     .withMessage("A valid email is required.")
-    .custom(async (account_email) => {
-      const emailExists = await accountModel.checkExistingEmail(account_email)
-      if (emailExists){
-        throw new Error("You are already using this email. Please use a different email.")
-      }
-    })]
-  }
+    .custom(async (value, { req }) => {
+        // 1. Ask the database for the account with this email
+        const account = await accountModel.getAccountByEmail(value)
+
+        // 2. If we found an account...
+        if (account) {
+            // 3. Check if the ID of that account matches the ID in the form
+            // (Note: req.body.account_id might be a string, so use != to allow type coercion)
+            if (account.account_id != req.body.account_id) {
+                throw new Error("You are already using this email. Please use a different email.")
+            }
+        }
+    })
+  ]
+}
 
 validate.updatePasswordRules = () => {
   return [
