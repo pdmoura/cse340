@@ -661,6 +661,85 @@ footer a:hover{
     text-decoration: underline;
 }
 
+
+
+/* Delete Confirmation Specific Container */
+#delete-inventory-form-container {
+  border: 1px solid #e74c3c; 
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
+}
+
+/* Read-Only Inputs */
+#delete-inventory-form-container input[readonly] {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  color: #495057;
+  cursor: not-allowed;
+  font-weight: bold;
+}
+
+/* Warning Text */
+#delete-inventory-form-container p.warning {
+  color: #c0392b;
+  font-weight: bold;
+  text-align: center;
+  margin: 1.5rem 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Delete Button */
+#delete-inventory-form-container button[type="submit"] {
+  background-color: #c0392b;
+  color: white;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#delete-inventory-form-container button[type="submit"]:hover {
+  background-color: #a93226;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#delete-inventory-form-container .cancel-link {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+  color: #222; 
+  background-color: #ffffff; 
+  border: 2px solid #444; 
+  text-decoration: none;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Hover & Active States */
+#delete-inventory-form-container .cancel-link:hover {
+  background-color: #444;
+  color: #fff; 
+}
+
+/* Focus State for Keyboard Navigation */
+#delete-inventory-form-container .cancel-link:focus {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px; 
+  background-color: #f4f4f4;
+  color: #222; 
+}
+
+
+
+
 /* =============================================
    MEDIA QUERY (Large Screens)
    ============================================= */

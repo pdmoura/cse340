@@ -67,12 +67,13 @@ router.post("/edit/",
   utilities.handleErrors(invController.updateInventory)
 );
 
-
+// Route to build the "delete inventory" view
 router.get("/delete/:invId",
   utilities.checkAccountType,
   utilities.handleErrors(invController.buildDeleteInventory)
 );
 
+// Route to process the delete
 router.post("/delete/",
   utilities.checkAccountType,
   utilities.handleErrors(invController.deleteInventory)
