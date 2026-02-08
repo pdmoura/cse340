@@ -33,7 +33,7 @@ router.post(
 // Default route for account management
 router.get(
   "/", 
-  utilities.checkJWTToken,
+  utilities.checkLogin,
   utilities.handleErrors(accountController.buildManagement)
 )
 

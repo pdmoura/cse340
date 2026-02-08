@@ -569,6 +569,98 @@ footer a:hover{
 	text-decoration: underline;
 }
 
+
+
+/* Container for Management Links */
+#inventory-management {
+    display: flex;
+    gap: 1.5rem;
+    margin: 2rem 0;
+    justify-content: center;
+}
+
+#inventory-management a {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 700;
+    transition: background-color 0.3s, transform 0.1s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#inventory-management a:hover {
+    background-color: #003a8c;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* Table Container Styling */
+#inventory-management-table-container {
+    background-color: var(--text-light);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--secondary-color);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+#inventory-management-table-container h2 {
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Styling the Classification Dropdown */
+#classificationList {
+    width: 100%;
+    max-width: 300px;
+    padding: 0.6rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* Dynamic Inventory Table Styling */
+#inventoryDisplay {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+#inventoryDisplay thead {
+    background-color: var(--accent-bg);
+}
+
+#inventoryDisplay th, 
+#inventoryDisplay td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--secondary-color);
+}
+
+#inventoryDisplay th {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+#inventoryDisplay tbody tr:hover {
+    background-color: #f1f7ff;
+}
+
+/* Action Links in Table (Modify/Delete) */
+#inventoryDisplay td a {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-right: 1rem;
+}
+
+#inventoryDisplay td a:hover {
+    text-decoration: underline;
+}
+
 /* =============================================
    MEDIA QUERY (Large Screens)
    ============================================= */
