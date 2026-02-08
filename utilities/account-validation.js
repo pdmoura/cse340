@@ -103,7 +103,7 @@ validate.checkLoginData = async (req, res, next) => {
     let errors = []
     errors = validationResult(req)
     if (!errors.isEmpty()) {
-      let nav = await utilities.getNav()
+      let nav = await utilities.getNav(req, res, next)
       res.render("account/login", {
         errors,
         title: "Login",

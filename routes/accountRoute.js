@@ -20,4 +20,23 @@ router.post(
   utilities.handleErrors(accountController.registerAccount)
 )
 
+
+// Process the login request
+router.post(
+  "/login",
+  regValidate.loginRules(),
+  regValidate.checkLoginData,
+  utilities.handleErrors(accountController.accountLogin)
+)
+
+
+// Default route for account management
+router.get(
+  "/", 
+  utilities.checkJWTToken,
+  utilities.handleErrors(accountController.buildManagement)
+)
+
+
+
 module.exports = router;
