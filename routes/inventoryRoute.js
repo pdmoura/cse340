@@ -6,8 +6,10 @@ const classValidate = require("../utilities/add-classification-validation")
 const invValidate = require("../utilities/add-inventory-validation")
 const utilities = require("../utilities/")
 
-// Route to build inventory management view
-router.get("/", utilities.handleErrors(invController.buildManagement));
+// Route to build inventory management view (PROTECTED)
+router.get("/",
+  utilities.checkAccountType,
+  utilities.handleErrors(invController.buildManagement));
 
 // Route to build inventory by classification view
 router.get("/type/:classificationId", invController.buildByClassificationId);
@@ -15,16 +17,20 @@ router.get("/type/:classificationId", invController.buildByClassificationId);
 // Route to build by inventory id view
 router.get("/detail/:invId", utilities.handleErrors(invController.buildByInventoryId));
 
-router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
+// Route to get inventory by classificationId - returns JSON objectfor the management view (PROTECTED)
+router.get("/getInventory/:classification_id",
+  utilities.checkAccountType,
+  utilities.handleErrors(invController.getInventoryJSON))
 
 
-// Route to build add classification view
+// Route to build add classification view (PROTECTED)
 router.get("/add-classification", 
   utilities.checkAccountType,
   utilities.handleErrors(invController.buildAddClassification
 ));
 
-// Route to process add classification
+// Route to process add classification (PROTECTED)
 router.post(
   "/add-classification",
   utilities.checkAccountType,
@@ -35,14 +41,14 @@ router.post(
 
 
 
-// Route to build add inventory view
+// Route to build add inventory view (PROTECTED)
 router.get("/add-inventory",
   utilities.checkAccountType,
   utilities.handleErrors(invController.buildAddInventory
 ));
 
 
-// Route to process add inventory
+// Route to process add inventory (PROTECTED)
 router.post(
   "/add-inventory",
     utilities.checkAccountType,
@@ -52,14 +58,14 @@ router.post(
 );
 
 
-// Route to build the "edit inventory" view
+// Route to build the "edit inventory" view (PROTECTED)
 router.get("/edit/:invId", 
   utilities.checkAccountType,
   utilities.handleErrors(invController.buildEditInventory)
 );
 
 
-// Route to process the edit
+// Route to process the edit  (PROTECTED)
 router.post("/edit/",
   utilities.checkAccountType,
   invValidate.inventoryRules(),
@@ -67,13 +73,13 @@ router.post("/edit/",
   utilities.handleErrors(invController.updateInventory)
 );
 
-// Route to build the "delete inventory" view
+// Route to build the "delete inventory" view (PROTECTED)
 router.get("/delete/:invId",
   utilities.checkAccountType,
   utilities.handleErrors(invController.buildDeleteInventory)
 );
 
-// Route to process the delete
+// Route to process the delete  (PROTECTED)
 router.post("/delete/",
   utilities.checkAccountType,
   utilities.handleErrors(invController.deleteInventory)
