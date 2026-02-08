@@ -59,6 +59,14 @@ router.get("/edit/:invId",
 );
 
 
+// Route to process the edit
+router.post("/edit/",
+  utilities.checkAccountType,
+  invValidate.inventoryRules(),
+  invValidate.checkUpdateData,
+  utilities.handleErrors(invController.updateInventory)
+);
+
 
 router.get("/delete/:invId",
   utilities.checkAccountType,

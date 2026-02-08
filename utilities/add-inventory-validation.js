@@ -31,15 +31,17 @@ validate.inventoryRules = () => {
 
     body("inv_image")
       .trim()
-      .escape()
       .notEmpty()
-      .withMessage("Please provide a valid image URL."),
+      .withMessage("Please provide a valid image URL.")
+      .matches(/^[\w\-\.\/\:\?\=\&\%]+$/)
+      .withMessage("Image path contains invalid characters."),
 
     body("inv_thumbnail")
       .trim()
-      .escape()
       .notEmpty()
-      .withMessage("Please provide a valid thumbnail URL."),
+      .withMessage("Please provide a valid thumbnail URL.")
+      .matches(/^[\w\-\.\/\:\?\=\&\%]+$/)
+      .withMessage("Thumbnail path contains invalid characters."),
 
     body("inv_price")
       .trim()
@@ -55,7 +57,9 @@ validate.inventoryRules = () => {
       .trim()
       .escape()
       .notEmpty()
-      .withMessage("Please provide a valid color."),
+      .withMessage("Please provide a valid color.")
+      .matches(/^[a-zA-Z\s]+$/)
+      .withMessage("Color must only contain letters and spaces (no numbers or symbols)."),
 
     body("classification_id")
       .trim()
