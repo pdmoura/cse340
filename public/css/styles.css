@@ -993,9 +993,10 @@ footer a:hover{
 .password-rules {
     display: block;
     font-size: 0.8rem;
-    color: #666;
+    color: #525151;
     margin-bottom: 5px;
     font-style: italic;
+    font-weight: 700;
 }
 
 button[type="submit"] {
