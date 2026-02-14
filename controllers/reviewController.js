@@ -31,6 +31,13 @@ reviewCont.buildEditReview = async function (req, res) {
   let nav = await utilities.getNav()
   const reviewData = await reviewModel.getReviewById(review_id)
   
+  // CHECAGEM DE SEGURANÇA: Garante que a avaliação pertence ao usuário logado
+  const loggedInUserId = res.locals.accountData.account_id;
+  if (!reviewData || reviewData.account_id !== loggedInUserId) {
+    req.flash("notice", "You do not have permission to edit this review.");
+    return res.redirect("/account/");
+  }
+  
   res.render("review/edit-review", {
     title: `Edit Review for ${reviewData.inv_make} ${reviewData.inv_model}`,
     nav,
@@ -46,6 +53,16 @@ reviewCont.buildEditReview = async function (req, res) {
  * *************************************** */
 reviewCont.updateReview = async function (req, res) {
   const { review_id, review_text } = req.body
+
+  // CHECAGEM DE SEGURANÇA: Puxa o dono original da avaliação no banco de dados
+  const reviewData = await reviewModel.getReviewById(parseInt(review_id))
+  const loggedInUserId = res.locals.accountData.account_id;
+
+  if (!reviewData || reviewData.account_id !== loggedInUserId) {
+    req.flash("notice", "You do not have permission to update this review.");
+    return res.redirect("/account/");
+  }
+
   const updateResult = await reviewModel.updateReview(review_id, review_text)
 
   if (updateResult) {
@@ -56,8 +73,6 @@ reviewCont.updateReview = async function (req, res) {
   } else {
     req.flash("notice", "Sorry, the update failed.")
     let nav = await utilities.getNav()
-    // Retrieve the data again to re-render the view
-    const reviewData = await reviewModel.getReviewById(review_id)
     
     res.status(501).render("review/edit-review", {
       title: "Edit Review",
@@ -65,10 +80,11 @@ reviewCont.updateReview = async function (req, res) {
       errors: null,
       review_id: review_id,
       review_text: review_text,
-      review_date: reviewData.review_date // Keep original date
+      review_date: reviewData.review_date 
     })
   }
 }
+
 
 /* ****************************************
  * Deliver Delete Confirmation View
@@ -77,6 +93,13 @@ reviewCont.buildDeleteReview = async function (req, res) {
   const review_id = parseInt(req.params.review_id)
   let nav = await utilities.getNav()
   const reviewData = await reviewModel.getReviewById(review_id)
+
+  // CHECAGEM DE SEGURANÇA
+  const loggedInUserId = res.locals.accountData.account_id;
+  if (!reviewData || reviewData.account_id !== loggedInUserId) {
+    req.flash("notice", "You do not have permission to delete this review.");
+    return res.redirect("/account/");
+  }
 
   res.render("review/delete-review", {
     title: "Delete Review",
@@ -95,6 +118,16 @@ reviewCont.buildDeleteReview = async function (req, res) {
  * *************************************** */
 reviewCont.deleteReview = async function (req, res) {
   const { review_id } = req.body
+
+  // CHECAGEM DE SEGURANÇA
+  const reviewData = await reviewModel.getReviewById(parseInt(review_id))
+  const loggedInUserId = res.locals.accountData.account_id;
+
+  if (!reviewData || reviewData.account_id !== loggedInUserId) {
+    req.flash("notice", "You do not have permission to delete this review.");
+    return res.redirect("/account/");
+  }
+
   const deleteResult = await reviewModel.deleteReview(review_id)
 
   if (deleteResult) {
