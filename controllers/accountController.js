@@ -1,5 +1,6 @@
 const utilities = require('../utilities/index');
 const accountModel = require('../models/account-model');
+const reviewModel = require("../models/review-model")
 const  bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -128,10 +129,14 @@ async function accountLogin(req, res, next) {
 * *************************************** */
 async function buildManagement(req, res, next) {
   let nav = await utilities.getNav(req, res, next)
+  // 1. NEW: GET USER REVIEWS
+  const reviews = await reviewModel.getReviewsByAccountId(res.locals.accountData.account_id)
+
   res.render("account/account-management", {
     title: "Account Management",
     nav,
     errors: null,
+    reviews: reviews
   })
 }
 
@@ -140,6 +145,16 @@ async function buildManagement(req, res, next) {
 async function buildUpdate(req, res) {
   let nav = await utilities.getNav()
   const account_id = parseInt(req.params.account_id)
+
+  // SECURITY CHECK: Ensure user is updating their own account (unless they are an Admin)
+  const loggedInUserId = res.locals.accountData.account_id;
+  const accountType = res.locals.accountData.account_type;
+
+  if (account_id !== loggedInUserId && accountType !== 'Admin') {
+    req.flash("notice", "You do not have permission to view or modify this account.");
+    return res.redirect("/account/");
+  }
+
   const accountData = await accountModel.getAccountById(account_id)
   if (accountData) {
     res.render("account/account-update", {
@@ -163,21 +178,31 @@ async function accountUpdate(req, res) {
   let nav = await utilities.getNav()
   const { account_firstname, account_lastname, account_email} = req.body
   const account_id = parseInt(req.body.account_id)
+
+  // SECURITY CHECK: Prevent users from bypassing hidden inputs to update others
+  const loggedInUserId = res.locals.accountData.account_id;
+  const accountType = res.locals.accountData.account_type;
+
+  if (account_id !== loggedInUserId && accountType !== 'Admin') {
+    req.flash("notice", "You do not have permission to modify this account.");
+    return res.redirect("/account/");
+  }
+
   const updateResult = await accountModel.updateAccount(account_firstname, account_lastname, account_email, account_id)
   
   if (updateResult) {
-    // Query the FRESH data from the DB
-    const updatedAccountData = await accountModel.getAccountById(account_id)
-    
-    // Re-sign the JWT with the new data
-    delete updatedAccountData.account_password
-    const accessToken = jwt.sign(updatedAccountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
-    
-    // Update the cookie
-    if(process.env.NODE_ENV === 'development') {
-      res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
-    } else {
-      res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+    // ONLY regenerate the JWT if the user is updating their *own* account. 
+    // This prevents an Admin from accidentally assuming the identity of the user they are updating.
+    if (account_id === loggedInUserId) {
+      const updatedAccountData = await accountModel.getAccountById(account_id)
+      delete updatedAccountData.account_password
+      const accessToken = jwt.sign(updatedAccountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+      
+      if(process.env.NODE_ENV === 'development') {
+        res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+      } else {
+        res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+      }
     }
 
     req.flash("notice", "Your account was successfully updated.")
@@ -202,6 +227,16 @@ async function passwordUpdate(req, res) {
   let nav = await utilities.getNav()
   const new_password = req.body.account_password
   const account_id = parseInt(req.body.account_id)
+
+  // SECURITY CHECK: Verify logged-in user matches the submitted account ID
+  const loggedInUserId = res.locals.accountData.account_id;
+  const accountType = res.locals.accountData.account_type;
+
+  if (account_id !== loggedInUserId && accountType !== 'Admin') {
+    req.flash("notice", "You do not have permission to modify this account's password.");
+    return res.redirect("/account/");
+  }
+
   const accountData = await accountModel.getAccountById(account_id)
   if (accountData) {
     try {

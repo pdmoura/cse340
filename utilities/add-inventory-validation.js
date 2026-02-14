@@ -20,7 +20,7 @@ validate.inventoryRules = () => {
       .trim()
       .matches(/^\d{4}$/)
       .withMessage("Year must be exactly 4 digits.")
-      .isInt({ min: 1886, max: new Date().getFullYear() + 1 })
+      .isInt({ min: 1886, max: new Date().getFullYear() + 64 })
       .withMessage("Please provide a valid year."),
 
     body("inv_description")

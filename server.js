@@ -18,7 +18,7 @@ const pool = require('./database/')
 const accountRoute = require("./routes/accountRoute")
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
-
+const reviewRoute = require('./routes/reviewRoute')
 
 
 
@@ -72,6 +72,8 @@ app.get("/", baseController.buildHome)
 app.use("/inv", inventoryRoute)
 // Account routes
 app.use("/account", utilities.handleErrors(accountRoute))
+// Review routes
+app.use('/review', reviewRoute)
 // Error demonstration route
 app.use("/error", utilities.handleErrors(baseController.buildError))
 // File Not Found Route - last route in list

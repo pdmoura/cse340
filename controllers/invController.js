@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model")
+const reviewModel = require("../models/review-model")
 const Util = require("../utilities/")
 const utilities = require("../utilities/")
 
@@ -37,6 +38,9 @@ invCont.buildByClassificationId = async function (req, res, next) {
 invCont.buildByInventoryId = async function (req, res, next) {
   const inv_id = req.params.invId
   const data = await invModel.getInventoryById(inv_id)
+  // 1. NEW: Fetch reviews for this specific vehicle
+  const reviews = await reviewModel.getReviewsByInventoryId(inv_id)
+
   try {
     const grid = await utilities.buildVehicleDetail(data[0])
     let nav = await utilities.getNav()
@@ -46,7 +50,8 @@ invCont.buildByInventoryId = async function (req, res, next) {
       nav,
       grid,
       errors: null,
-      inv_id: inv_id
+      inv_id: inv_id,
+      reviews: reviews, // 2. NEW: Pass the reviews array to the view
     })
   } catch (error) {
     return next({status: 404, message: 'Sorry, we appear to have lost that page.'})

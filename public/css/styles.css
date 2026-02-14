@@ -26,8 +26,7 @@ body {
 	font-family: var(--font-body);
 	color: var(--text-dark);
 	background-color: #ffffff;
-	line-height: 1.6;
-}
+	line-height: 1.6;}
 
 h1,
 h2,
@@ -49,6 +48,10 @@ img {
 a {
 	text-decoration: none;
 	color: var(--primary-color);
+}
+
+#login-invitation{
+    text-decoration: underline;
 }
 
 /* =============================================
@@ -454,7 +457,8 @@ main h1 {
     color: var(--text-dark);
 }
 
-.form-container input {
+.form-container input,
+.form-container textarea {
     width: 100%;
     padding: 0.8rem;
     border-radius: 6px;
@@ -463,7 +467,13 @@ main h1 {
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.form-container input:focus {
+/* Fix for textarea resize */
+.form-container textarea {
+    resize: vertical;
+}
+
+.form-container input:focus,
+.form-container textarea:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
@@ -506,13 +516,15 @@ main h1 {
     transform: scale(0.98);
 }
 
-.form-container input:focus:valid {
+.form-container input:focus:valid,
+.form-container textarea:focus:valid {
     border-color: #2e7d32;
     background-color: #f1f8e9; 
     box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
 }
 
-.form-container input:focus:invalid {
+.form-container input:focus:invalid,
+.form-container textarea:focus:invalid {
     border-color: #d32f2f; 
     background-color: #fffde7; 
     box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
@@ -561,7 +573,7 @@ main h1 {
 .pswdBtn svg {
     width: 20px;
     height: 20px;
-    pointer-events: none;
+    /* pointer-events: none; */
 }
 
 .hidden {
@@ -800,77 +812,114 @@ footer a:hover{
 
 
 /* Delete Confirmation Specific Container */
+/* 1. The Container */
 #delete-inventory-form-container {
-  border: 1px solid #e74c3c; 
+  background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
+  /* Top border uses the darker, high-contrast red */
+  border: 1px solid #e0e0e0; 
+  border-top: 5px solid #b71c1c; 
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  max-width: 500px;
+  margin: 2rem auto;
 }
 
-/* Read-Only Inputs */
-#delete-inventory-form-container input[readonly] {
-  background-color: #e9ecef;
-  border: 1px solid #ced4da;
-  color: #495057;
-  cursor: not-allowed;
-  font-weight: bold;
-}
-
-/* Warning Text */
+/* 2. The Warning Box (High Contrast) */
 #delete-inventory-form-container p.warning {
-  color: #c0392b;
-  font-weight: bold;
-  text-align: center;
-  margin: 1.5rem 0;
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  background-color: #ffebee; /* Very Light Red background */
+  color: #8a0e0e; /* Much Darker Red (Ratio: 9.3:1 on light bg) */
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 5px solid #b71c1c;
+  font-weight: 700;
+  text-align: left;
+  margin: 0 0 1.5rem 0;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-/* Delete Button */
+#delete-inventory-form-container p.warning::before {
+  content: "⚠️"; 
+  font-size: 1.5rem; /* Larger icon for visibility */
+}
+
+/* 3. Read-Only Inputs */
+#delete-inventory-form-container label {
+    font-weight: 700;
+    color: #222; /* Near Black (Ratio: 16:1) */
+    margin-top: 15px;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 0.95rem;
+}
+
+#delete-inventory-form-container input[readonly], 
+#delete-inventory-form-container textarea[readonly] {
+  background-color: #f4f4f4; 
+  border: 1px dashed #767676; 
+  color: #333; 
+  cursor: not-allowed;
+  font-weight: 500;
+  width: 100%; 
+  padding: 10px; 
+}
+
+/* 4. The Delete Button (High Contrast Red) */
 #delete-inventory-form-container button[type="submit"] {
-  background-color: #c0392b;
-  color: white;
+  background-color: #910909; 
+  color: #ffffff;
   width: 100%;
-  padding: 12px;
-  border: none;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border-radius: 4px;
+  padding: 14px;
+  border: 2px solid #b71c1c;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  margin-top: 2rem;
+  transition: all 0.2s ease;
 }
 
+/* Hover State: Goes even darker */
 #delete-inventory-form-container button[type="submit"]:hover {
-  background-color: #a93226;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  background-color: #8a0e0e; 
+  border-color: #8a0e0e;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  text-decoration: underline; 
 }
 
+/* Focus State: High Visibility Focus Ring */
+#delete-inventory-form-container button[type="submit"]:focus {
+  outline: 3px solid #222;
+  outline-offset: 2px;
+}
+
+/* 5. The Cancel Link */
 #delete-inventory-form-container .cancel-link {
   display: block;
   text-align: center;
   margin-top: 1rem;
-  color: #222; 
-  background-color: #ffffff; 
-  border: 2px solid #444; 
-  text-decoration: none;
-  font-weight: bold;
-  padding: 10px 15px;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  color: #333; 
+  text-decoration: underline; 
+  font-weight: 600;
+  padding: 12px;
+  background: transparent;
+  border: 2px solid transparent;
 }
 
-/* Hover & Active States */
 #delete-inventory-form-container .cancel-link:hover {
-  background-color: #444;
-  color: #fff; 
+  color: #000;
+  background-color: #f0f0f0; 
+  border-radius: 4px;
+  text-decoration: none;
 }
 
-/* Focus State for Keyboard Navigation */
 #delete-inventory-form-container .cancel-link:focus {
-  outline: 3px solid #005fcc;
-  outline-offset: 2px; 
-  background-color: #f4f4f4;
-  color: #222; 
+  outline: 3px solid #004aad; 
+  background-color: #e3f2fd;
+  border-radius: 4px;
 }
 
 
@@ -957,6 +1006,265 @@ button[type="submit"] {
     cursor: pointer;
 }
 
+
+/* =============================================
+   VEHICLE DETAIL REVIEWS
+   ============================================= */
+.add-review {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 2rem;
+    max-width: 600px;
+}
+
+.add-review h3 {
+    margin-top: 0;
+}
+
+/* Apply the same input styles to the detail page form */
+.add-review input,
+.add-review textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    margin-bottom: 1rem;
+}
+
+.add-review textarea {
+    resize: vertical;
+}
+
+/* Validation Colors for Add Review Form */
+.add-review input:focus:valid,
+.add-review textarea:focus:valid {
+    border-color: #2e7d32;
+    background-color: #f1f8e9; 
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.add-review input:focus:invalid,
+.add-review textarea:focus:invalid {
+    border-color: #d32f2f; 
+    background-color: #fffde7; 
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+/* Style the Read-Only Screen Name input */
+input.readonly-input {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    color: #495057;
+    cursor: not-allowed;
+    font-weight: bold;
+}
+
+/* The List Container */
+.review-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Individual Review Card */
+.review-list li {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0; 
+    border-radius: 8px; 
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover Effect - Makes it interactive */
+.review-list li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    border-color: var(--secondary-color);
+}
+
+/* Reviewer Name */
+.review-list li strong {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+/* The Review Text (Quote Style) */
+.review-list li p {
+    background-color: #f9f9f9; 
+    padding: 1rem 1.2rem;
+    border-radius: 0 8px 8px 0;
+    margin: 0.8rem 0;
+    font-style: italic;
+    color: #444;
+    border-left: 4px solid var(--primary-color);
+    line-height: 1.6;
+}
+
+/* The Date */
+.review-list li small {
+    display: block;
+    text-align: right;
+    color: #333333; 
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+/* =============================================
+   EMPTY STATE (No Reviews)
+   ============================================= */
+li.no-reviews {
+    list-style: none;
+    background-color: #f8f9fa; 
+    border: 2px dashed var(--primary-color);
+    border-radius: 12px;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    color: var(--text-dark);
+}
+
+.no-review-icon {
+    font-size: 3rem; /* Big icon */
+    margin-bottom: 1rem;
+    display: block;
+    animation: bounce 2s infinite; /* Gentle bounce animation */
+}
+
+li.no-reviews h3 {
+    color: var(--primary-color);
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+}
+
+li.no-reviews p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+/* Optional: Gentle Bounce Animation */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-10px);}
+    60% {transform: translateY(-5px);}
+}
+
+
+
+/* =============================================
+   TABLE COLUMN SIZING
+   ============================================= */
+
+/* 1. Make the Review Card span the full width */
+.full-width-card {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 2rem; 
+}
+
+/* 1. Header Styling */
+#inventoryDisplay thead th {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    padding: 1rem;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    border: none;
+
+}
+
+/* 2. General Row Styling */
+#inventoryDisplay tbody td {
+    padding: 1.2rem 1rem; 
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 1rem;
+    color: #444;
+}
+
+/* 3. COLUMN 1: VEHICLE */
+#inventoryDisplay th:nth-child(1), 
+#inventoryDisplay td:nth-child(1) {
+    width: 45%;
+    text-align: left;
+}
+
+#inventoryDisplay td:nth-child(1) { 
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* 4. COLUMN 2: DATE */
+#inventoryDisplay th:nth-child(2), 
+#inventoryDisplay td:nth-child(2) {
+    width: 25%; 
+    text-align: left;
+}
+
+#inventoryDisplay td:nth-child(2) { 
+    font-weight: 700;
+    color: #333333;
+}
+
+/* 5. COLUMN 3: ACTIONS */
+#inventoryDisplay th:nth-child(3), 
+#inventoryDisplay td:nth-child(3) {
+    width: 30%;
+    text-align: center;
+}
+
+/* 5. Style Links as Mini Buttons */
+.action-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin: 0 0.2rem;
+    transition: all 0.2s ease;
+}
+
+/* Edit Button (Blue Outline) */
+.action-btn.edit {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+.action-btn.edit:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Delete Button (Red Outline) */
+.action-btn.delete {
+    background-color: transparent;
+    color: #d32f2f;
+    border: 1px solid #d32f2f;
+}
+.action-btn.delete:hover {
+    background-color: #d32f2f;
+    color: white;
+}
 
 
 /* =============================================
@@ -1079,6 +1387,10 @@ button[type="submit"] {
 		margin-top: 4vh;
 		margin-bottom: 0;
 	}
+
+    #account-dashboard {
+        grid-template-columns: 1fr 1fr; 
+    }
 }
 
 

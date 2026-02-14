@@ -24,6 +24,33 @@
             <a href="/inv" class="account-btn admin-btn">Access Inventory Management</a>
         </div>
       <% } %>
-      
+      <div class="management-card user-card full-width-card">
+          <h2>My Reviews</h2>
+          
+          <% if (locals.reviews && locals.reviews.length > 0) { %>
+              <table id="inventoryDisplay"> <thead>
+                      <tr>
+                          <th>Vehicle</th>
+                          <th>Date</th>
+                          <th>Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <% reviews.forEach(review => { %>
+                          <tr>
+                              <td><%= review.inv_make %> <%= review.inv_model %></td>
+                              <td><%= new Date(review.review_date).toLocaleDateString() %></td>
+                              <td>
+                                  <a href="/review/edit/<%= review.review_id %>" title="Edit">Edit</a> | 
+                                  <a href="/review/delete/<%= review.review_id %>" title="Delete">Delete</a>
+                              </td>
+                          </tr>
+                      <% }) %>
+                  </tbody>
+              </table>
+          <% } else { %>
+              <p>You haven't written any reviews yet.</p>
+          <% } %>
+      </div>
   </div>
 <% } %>

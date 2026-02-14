@@ -4,7 +4,7 @@
     <% } else {
       res.redirect('/')
     } %>
-<%# messages() %>
+<%- messages() %>
 <% if (errors) { %>
   <ul class="notice">
  <% errors.array().forEach(error => { %>
@@ -13,3 +13,49 @@
  </ul>
 <% } %>
 <%- grid %>
+
+<div id="reviews-section">
+    <h2>Customer Reviews</h2>
+
+    <% if (locals.loggedin) { %>
+        <div class="add-review">
+            <h3>Add your own review</h3>
+            <form action="/review/add" method="POST">
+                <div class="form-group">
+                    <label>Screen Name:</label>
+                    <input type="text" readonly value="<%= locals.accountData.account_firstname.charAt(0) %><%= locals.accountData.account_lastname %>">
+                </div>
+                
+                <div class="form-group">
+                    <label for="review_text">Review:</label>
+                    <textarea name="review_text" id="review_text" required rows="4" placeholder="Write your review here..."></textarea>
+                </div>
+
+                <input type="hidden" name="inv_id" value="<%= inv_id %>">
+                <input type="hidden" name="account_id" value="<%= locals.accountData.account_id %>">
+
+                <button type="submit" class="account-btn">Submit Review</button>
+            </form>
+        </div>
+    <% } else { %>
+        <p>You must <a href="/account/login" id="login-invitation">login</a> to write a review.</p>
+    <% } %>
+
+    <ul class="review-list">
+        <% if (reviews && reviews.length > 0) { %>
+            <% reviews.forEach(review => { %>
+                <li>
+                    <strong><%= review.screen_name %></strong> wrote:
+                    <p>"<%= review.review_text %>"</p>
+                    <small>Date: <%= new Date(review.review_date).toLocaleDateString() %></small>
+                </li>
+            <% }) %>
+        <% } else { %>
+            <li class="no-reviews">
+                <span class="no-review-icon">📝</span>
+                <h3>No reviews yet!</h3>
+                <p>Be the first to share your thoughts on this vehicle.</p>
+            </li>
+        <% } %>
+    </ul>
+</div>
