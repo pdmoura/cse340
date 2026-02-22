@@ -1,47 +1,122 @@
-## Getting Started
+# CSE Motors - Vehicle Inventory Management System
 
-This document is intended to get you started quickly in building a backend driven Node.js application complete with pages and content, backend logic and a PostgreSQL database for data storage.
+A full-stack Node.js web application for managing vehicle inventory, user accounts, and customer reviews. Built as a CSE 340 course project with Express.js, EJS templating, and PostgreSQL database.
+
+## Features
+
+- **Vehicle Inventory Management**: Browse, search, and manage vehicle inventory
+- **User Authentication**: Secure account registration and login with JWT tokens
+- **Review System**: Customer reviews and ratings for vehicles
+- **Responsive Design**: Modern UI with EJS templates and CSS styling
+- **Database Integration**: PostgreSQL database for persistent data storage
+- **Session Management**: Secure user sessions with PostgreSQL session store
+
+## Technology Stack
+
+- **Backend**: Node.js with Express.js framework
+- **Database**: PostgreSQL with connection pooling
+- **Authentication**: JWT tokens and bcrypt for password hashing
+- **Templating**: EJS with Express layouts
+- **Session Store**: connect-pg-simple for PostgreSQL-based sessions
+- **Package Manager**: PNPM for efficient dependency management
+
 ## Prerequisites
 
-The only prerequisite software required to have installed at this point is Git for version control and a code editor - we will use VS Code (VSC).
+- Node.js (v14 or higher)
+- PNPM package manager
+- PostgreSQL database (or use provided cloud database)
+- Git for version control
 
-## Package Management
+## Installation
 
-The foundation of the project development software is Node. While functional, Node depends on "packages" to add functionality to accomplish common tasks. This requires a package manager. Three common managers are NPM (Node Package Manager), YARN, and PNPM. While all do the same thing, they do it slightly differently. We will use PNPM for two reasons: 1) All packages are stored on your computer only once and then symlinks (system links) are created from the package to the project as needed, 2) performance is increased meaning that when the project builds, it does so faster.
-You will need to either install or activate PNPM before using it. See https://pnpm.io/
+1. Clone the repository:
 
-## Install the Project Dependencies
+    ```bash
+    git clone <repository-url>
+    cd cse340
+    ```
 
-1. Open the downloaded project folder (where this file is located) in VS Code (VSC).
-2. Open the VSC terminal: Terminal > New Window.
-3. Run the following command in the terminal:
+2. Install dependencies:
 
+    ```bash
     pnpm install
+    ```
 
-4. The first time it may take a few minutes, depending on the speed of your computer and the speed of your Internet connection. This command will instruct PNPM to read the package.json file and download and install the dependencies (packages) needed for the project. It will build a "node_modules" folder storing each dependency and its dependencies. It should also create a pnpm-lock.yaml file. This file should NEVER be altered by you. It is an internal file (think of it as an inventory) that PNPM uses to keep track of everything in the project.
+3. Set up environment variables:
+    - Copy `.env` file and configure your database connection
+    - Update `DATABASE_URL` with your PostgreSQL connection string
+    - Generate secure `SESSION_SECRET` and `ACCESS_TOKEN_SECRET`
 
-## Start the Express Server
+4. Set up the database:
+    - Run the SQL scripts in the `database/` directory
+    - Execute `db-sql-code.sql` to create tables and initial data
 
-With the packages installed you're ready to run the initial test.
-1. If the VSC terminal is still open use it. If it is closed, open it again using the same command as before.
-2. Type the following command, then press Enter:
+## Running the Application
 
+1. Start the development server:
+
+    ```bash
     pnpm run dev
+    ```
 
-3. If the command works, you should see the message "app listening on localhost:5500" in the console.
-4. Open the package.json file.
-5. Note the "Scripts" area? There is a line with the name of "dev", which tells the nodemon package to run the server.js file.
-6. This is the command you just ran.
-7. Open the server.js file.
-8. Near the bottom you'll see two variables "Port" and "Host". The values for the variables are stored in the .env file.
-9. These variables are used when the server starts on your local machine.
+2. For production:
 
-## Move the demo file
+    ```bash
+    pnpm start
+    ```
 
-When you installed Git and cloned the remote repository in week 1, you should have created a simple web page.
-1. Find and move that simple web page to the public folder. Be sure to note its name.
-## Test in a browser
+3. Open your browser and navigate to: `http://localhost:5500`
 
-1. Go to http://localhost:5500 in a browser tab. Nothing should be visible as the server has not been setup to repond to that route.
-2. Add "/filename.html" to the end of the URL (replacing filename with the name of the file you moved to the public folder).
-3. You should see that page in the browser.
+## Project Structure
+
+```
+cse340/
+├── controllers/          # Application logic and route handlers
+├── database/            # Database configuration and SQL scripts
+├── models/              # Data models and database interactions
+├── routes/              # Express route definitions
+├── utilities/           # Helper functions and middleware
+├── views/               # EJS templates and views
+│   ├── account/         # Account-related pages
+│   ├── inventory/       # Inventory management pages
+│   ├── review/          # Review system pages
+│   ├── layouts/         # Page layouts
+│   └── partials/        # Reusable template components
+├── public/              # Static assets (CSS, images, JavaScript)
+├── server.js            # Main application entry point
+└── package.json         # Project dependencies and scripts
+```
+
+## Key Routes
+
+- `/` - Home page with featured vehicles
+- `/inv` - Vehicle inventory management
+- `/account` - User registration, login, and profile management
+- `/review` - Customer review system
+
+## Environment Variables
+
+The application uses the following environment variables (defined in `.env`):
+
+- `PORT` - Server port (default: 5500)
+- `HOST` - Server host (default: localhost)
+- `DATABASE_URL` - PostgreSQL connection string
+- `SESSION_SECRET` - Secret for session encryption
+- `ACCESS_TOKEN_SECRET` - Secret for JWT token signing
+
+## Database Schema
+
+The application uses several key tables:
+
+- `inventory` - Vehicle information
+- `account` - User accounts
+- `review` - Customer reviews
+- `classification` - Vehicle categories
+
+## Development Notes
+
+- Uses `nodemon` for automatic server restarts during development
+- Implements error handling with custom error pages
+- Includes input validation and sanitization
+- Features secure password hashing with bcrypt
+- Implements JWT-based authentication for API routes
